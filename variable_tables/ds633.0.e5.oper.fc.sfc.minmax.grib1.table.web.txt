@@ -1,0 +1,12 @@
+==========================================================================================================================
+GRIB1 (and netCDF4/HDF5) Table for 'ERA5 atmospheric surface forecast (minimum-maximum)'   ('e5.oper.fc.sfc.minmax')
+      * 0.25 Degree Latitude-Longitude Grid *
+                                                                                                                          
+      Local               Short                                                                                           
+      Table   Parameter   Name     Description                                                       Units                
+==========================================================================================================================
+   1   128       49       10fg     10 metre wind gust since previous post-processing                 m s**-1        
+   2   128      201       mx2t     Maximum temperature at 2 metres since previous post-processing    K              
+   3   128      202       mn2t     Minimum temperature at 2 metres since previous post-processing    K              
+   4   228      226       mxtpr    Maximum total precipitation rate since previous post-processing   kg m**-2 s**-1 
+   5   228      227       mntpr    Minimum total precipitation rate since previous post-processing   kg m**-2 s**-1 
