@@ -1,6 +1,7 @@
 #!/bin/bash
 
-GLOBUS=/N/slate/obrienta/software/bigred200/miniconda3/bin/globus
+# NOTE: chage this to the full path to globus if globus isn't in your $PATH
+GLOBUS=globus
 
 NCAR_ID="1e128d3c-852d-11e8-9546-0a6d4e044368"
 IURT_ID="b287987e-b433-11e8-8241-0a3b7ca8ce66"

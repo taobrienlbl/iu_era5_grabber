@@ -52,7 +52,7 @@ if len(current_row) != 1:
 # %%
 # construct the path template
 table, parameter, _, _, _, _, directory, _ = list(current_row.values[0])
-path_template_base = f"/ds633.0/{directory}/{{YYYYMM}}/{directory}.{table}_{parameter}_{varname}.ll025sc.{{date_range}}.nc"
+path_template_base = f"/ds633.0/{directory}/{{YYYYMM}}/{directory}.{table:03}_{parameter:03}_{varname}.ll025sc.{{date_range}}.nc"
 
 # if the data are on the invariant grid, there is only one file to worry about
 if directory == "e5.oper.invariant":
@@ -72,10 +72,11 @@ listing = subprocess.check_output(['globus','ls', f"{NCAR_ID}:{check_dir}"])
 # determine whether files are stored daily or monthly
 
 # get the list of files that match
+search_str = f"{table}_{parameter}_{varname}"
 matching_files = []
 for ffile in listing.decode('UTF-8').split("\n"):
     if ffile[-3:] == ".nc":
-        search_str = f"{table}_{parameter}_{varname}"
+        search_str = f"{table:03}_{parameter:03}_{varname}"
         if search_str in ffile:
             matching_files.append(ffile)
 
