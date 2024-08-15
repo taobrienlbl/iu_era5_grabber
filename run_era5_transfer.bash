@@ -31,7 +31,8 @@ if [ "$FILEPATHLIST" == "" ]; then
 fi
 
 if [ "$OUTPUT_DIRECTORY" == "" ]; then
-    OUTPUT_DIRECTORY="/N/scratch/${USER}/ERA5/"
+    #OUTPUT_DIRECTORY="/N/scratch/${USER}/ERA5/"
+    OUTPUT_DIRECTORY="/N/project/obrienta_startup/datasets/ERA5/"
 fi
 
 transfer_name=${FILEPATHLIST//./_}

@@ -54,6 +54,10 @@ if len(current_row) != 1:
 table, parameter, _, _, _, _, directory, _ = list(current_row.values[0])
 path_template_base = f"/ds633.0/{directory}/{{YYYYMM}}/{directory}.{table:03}_{parameter:03}_{varname}.ll025sc.{{date_range}}.nc"
 
+# modify the filename if the variable is u or v
+if varname == "u" or varname == "v":
+  path_template_base = path_template_base.replace("ll025sc","ll025uv")
+
 # if the data are on the invariant grid, there is only one file to worry about
 if directory == "e5.oper.invariant":
     YYYYMM = "197901"
