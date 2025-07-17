@@ -1,1 +1,4 @@
 *.txt
+*.list
+.venv
+*__pycache__*
