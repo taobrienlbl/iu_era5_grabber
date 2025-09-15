@@ -7,4 +7,4 @@ This directory contains scripts for mirroring subsets of ERA5 from the NCAR RDA 
 1. Generate the list of files to transfer, either: 
     * `uv run python3 1_get_state_file_lists.py --start_date YYYY-MM-DD --end_date YYYY-MM-DD`, or
     * `uv run python3 generate_file_list.py --start_date YYYY-MM-DD --end_date YYYY-MM-DD --varname <variable_name> > varname.list`
-1. Transfer the files: `uv run bash 2_run_era5_transfer.py <file_list1> <file_list2> ... --output-directory <output_directory>`
+1. Transfer the files: `uv run python 2_run_era5_transfer.py <file_list1> <file_list2> ... --output-directory <output_directory>`
