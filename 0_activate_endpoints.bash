@@ -3,7 +3,7 @@
 # NOTE: chage this to the full path to globus if globus isn't in your $PATH
 GLOBUS=globus
 
-NCAR_ID="b6b5d5e8-eb14-4f6b-8928-c02429d67998"
+NCAR_ID="c4e40965-a024-43d7-bef4-6010f3731b61"
 IURT_ID="b2563c13-063e-444b-8946-823f642d9f2f"
 
 export LC_ALL=C.UTF-8

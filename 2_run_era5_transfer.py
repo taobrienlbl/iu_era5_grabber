@@ -5,7 +5,8 @@ import subprocess
 import argparse
 
 # Globus endpoint IDs
-NCAR_ID = "b6b5d5e8-eb14-4f6b-8928-c02429d67998"
+# NSF NCAR GDEX Dataset Archive (formerly the NCAR RDA endpoint b6b5d5e8-..., deleted by 2026-10)
+NCAR_ID = "c4e40965-a024-43d7-bef4-6010f3731b61"
 IURT_ID = "b2563c13-063e-444b-8946-823f642d9f2f"
 
 # Globus command
@@ -62,6 +63,7 @@ for filepathlist in args.filepaths:
         proc = subprocess.run([
             GLOBUS, "transfer",
             "--sync-level", "checksum",
+            "--verify-checksum",
             "--preserve-mtime",
             f"{NCAR_ID}:/",
             f"{IURT_ID}:/",

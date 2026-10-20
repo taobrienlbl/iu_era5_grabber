@@ -37,7 +37,7 @@ def generate_file_list(
         varname,
         start_date,
         end_date,
-        NCAR_ID = "b6b5d5e8-eb14-4f6b-8928-c02429d67998",
+        NCAR_ID = "c4e40965-a024-43d7-bef4-6010f3731b61",
         directory=None,
         variable_tables_dir="variable_tables",
         verbose = True,
@@ -99,26 +99,34 @@ def generate_file_list(
     d1 = dt.datetime.strptime(d1str, "%Y%m%d%H")
     d2 = dt.datetime.strptime(d2str,"%Y%m%d%H")
     time_diff = d2 - d1
-    if time_diff.days > 1:
-        files_are_daily = False
-    else:
-        files_are_daily = True
 
-    # create a list of all dates for which files should exist
-    if files_are_daily:
-        freq_arg = 'D'
-    else:
-        freq_arg = 'MS'
+    # Forecast products (e5.oper.fc.sfc.*) are stored as two semi-monthly
+    # files per month directory, keyed by forecast initialization time:
+    #   YYYYMM0106_YYYYMM1606 and YYYYMM1606_<next month>0106
+    files_are_semimonthly = d1.day == 1 and d1.hour == 6 and d2.day == 16 and d2.hour == 6
+    files_are_daily = (not files_are_semimonthly) and time_diff.days <= 1
 
-    # generate the start dates
-    all_dates_1 = pd.date_range(start_date, end_date, freq = freq_arg)[:-1]
+    # the month (or day) start dates; end_date is exclusive
+    freq_arg = 'D' if files_are_daily else 'MS'
+    all_dates_1 = pd.date_range(start_date, end_date, freq = freq_arg)
+    all_dates_1 = [d for d in all_dates_1 if d < end_date]
+
+    if files_are_semimonthly:
+        paths = []
+        for m in all_dates_1:
+            mid = m + dt.timedelta(days=15, hours=6)
+            nxt = (m + pd.offsets.MonthBegin(1)) + dt.timedelta(hours=6)
+            for a, b in ((m + dt.timedelta(hours=6), mid), (mid, nxt)):
+                date_range = f"{a.strftime('%Y%m%d%H')}_{b.strftime('%Y%m%d%H')}"
+                paths.append(path_template_base.format(YYYYMM=m.strftime("%Y%m"), date_range=date_range))
+        return paths
 
     if files_are_daily:
         # set the end day to be the same as the start date for daily data
         all_dates_2 = all_dates_1
     else:
         # set the end day to be the end of the month for monthly data
-        all_dates_2 = pd.date_range(start_date, end_date, freq = 'M')[:-1]
+        all_dates_2 = [d + pd.offsets.MonthEnd(0) for d in all_dates_1]
 
     # set the end time to hour 23
     all_dates_2 = [ d + dt.timedelta(hours=23) for d in all_dates_2 ]
@@ -161,7 +169,7 @@ if __name__ == "__main__":
     parser.add_argument("--variable-tables", type=str, default="variable_tables",
                         help="The directory containing the variable tables (default: variable_tables).")
     parser.add_argument("--ncar-id", type=str, default=None,
-                        help="The NCAR Globus ID (default: b6b5d5e8-eb14-4f6b-8928-c02429d67998).")
+                        help="The NCAR Globus ID (default: c4e40965-a024-43d7-bef4-6010f3731b61).")
     parser.add_argument("--start-date", type=str, default="1979-01-01",
                         help="The start date for the file list (default: 1979-01-01).")
     parser.add_argument("--end-date", type=str, default="2022-01-01",
@@ -183,6 +191,6 @@ if __name__ == "__main__":
 
     # if no NCAR ID is provided, use the default
     if NCAR_ID is None:
-        NCAR_ID="b6b5d5e8-eb14-4f6b-8928-c02429d67998"
+        NCAR_ID="c4e40965-a024-43d7-bef4-6010f3731b61"
 
     main(varname, directory, NCAR_ID, variable_tables_dir, start_date, end_date, verbose)
